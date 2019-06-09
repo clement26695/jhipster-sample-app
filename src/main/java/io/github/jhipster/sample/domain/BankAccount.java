@@ -1,14 +1,11 @@
 package io.github.jhipster.sample.domain;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -16,13 +13,12 @@ import java.util.Set;
 import java.util.Objects;
 
 /**
- * A BankAccount.
- */
+* A BankAccount.
+*/
 @Entity
 @Table(name = "bank_account")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class BankAccount implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -105,10 +101,14 @@ public class BankAccount implements Serializable {
 
     @Override
     public String toString() {
-        return "BankAccount{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", balance=" + getBalance() +
-            "}";
+        return "BankAccount{"
+            + "id="
+            + getId()
+            + ", name='"
+            + getName()
+            + "'"
+            + ", balance="
+            + getBalance()
+            + "}";
     }
 }

@@ -8,7 +8,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "jhi_date_time_wrapper")
 public class DateTimeWrapper implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -110,7 +109,8 @@ public class DateTimeWrapper implements Serializable {
         }
 
         DateTimeWrapper dateTimeWrapper = (DateTimeWrapper) o;
-        return !(dateTimeWrapper.getId() == null || getId() == null) && Objects.equals(getId(), dateTimeWrapper.getId());
+        return !(dateTimeWrapper.getId() == null || getId() == null)
+            && Objects.equals(getId(), dateTimeWrapper.getId());
     }
 
     @Override
@@ -120,12 +120,17 @@ public class DateTimeWrapper implements Serializable {
 
     @Override
     public String toString() {
-        return "TimeZoneTest{" +
-            "id=" + id +
-            ", instant=" + instant +
-            ", localDateTime=" + localDateTime +
-            ", offsetDateTime=" + offsetDateTime +
-            ", zonedDateTime=" + zonedDateTime +
-            '}';
+        return "TimeZoneTest{"
+            + "id="
+            + id
+            + ", instant="
+            + instant
+            + ", localDateTime="
+            + localDateTime
+            + ", offsetDateTime="
+            + offsetDateTime
+            + ", zonedDateTime="
+            + zonedDateTime
+            + '}';
     }
 }

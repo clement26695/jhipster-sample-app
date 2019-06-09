@@ -1,6 +1,5 @@
 package io.github.jhipster.sample.service.mapper;
 
-
 import io.github.jhipster.sample.JhipsterSampleApplicationApp;
 import io.github.jhipster.sample.domain.User;
 import io.github.jhipster.sample.service.dto.UserDTO;
@@ -9,20 +8,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Integration tests for {@link UserMapper}.
- */
-@SpringBootTest(classes = JhipsterSampleApplicationApp.class)
+* Integration tests for {@link UserMapper}.
+*/
+@SpringBootTest(
+    classes = JhipsterSampleApplicationApp.class
+)
 public class UserMapperIT {
-
     private static final String DEFAULT_LOGIN = "johndoe";
     private static final Long DEFAULT_ID = 1L;
 
@@ -86,7 +84,8 @@ public class UserMapperIT {
         assertThat(users).size().isEqualTo(1);
         assertThat(users.get(0).getAuthorities()).isNotNull();
         assertThat(users.get(0).getAuthorities()).isNotEmpty();
-        assertThat(users.get(0).getAuthorities().iterator().next().getName()).isEqualTo("ADMIN");
+        assertThat(users.get(0).getAuthorities().iterator().next().getName())
+            .isEqualTo("ADMIN");
     }
 
     @Test
@@ -115,7 +114,8 @@ public class UserMapperIT {
         assertThat(user).isNotNull();
         assertThat(user.getAuthorities()).isNotNull();
         assertThat(user.getAuthorities()).isNotEmpty();
-        assertThat(user.getAuthorities().iterator().next().getName()).isEqualTo("ADMIN");
+        assertThat(user.getAuthorities().iterator().next().getName())
+            .isEqualTo("ADMIN");
     }
 
     @Test
@@ -136,7 +136,8 @@ public class UserMapperIT {
 
     @Test
     public void testUserFromId() {
-        assertThat(userMapper.userFromId(DEFAULT_ID).getId()).isEqualTo(DEFAULT_ID);
+        assertThat(userMapper.userFromId(DEFAULT_ID).getId())
+            .isEqualTo(DEFAULT_ID);
         assertThat(userMapper.userFromId(null)).isNull();
     }
 }
