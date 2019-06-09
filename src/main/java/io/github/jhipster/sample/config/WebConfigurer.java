@@ -80,6 +80,7 @@ public class WebConfigurer
     @Override
     public void customize(WebServerFactory server) {
         setMimeMappings(server);
+
         // When running in an IDE or with ./mvnw spring-boot:run, set location of the static web assets.
         setLocationForStaticAssets(server);
     }
@@ -87,6 +88,7 @@ public class WebConfigurer
     private void setMimeMappings(WebServerFactory server) {
         if (server instanceof ConfigurableServletWebServerFactory) {
             MimeMappings mappings = new MimeMappings(MimeMappings.DEFAULT);
+
             // IE issue, see https://github.com/jhipster/generator-jhipster/pull/711
             mappings.add(
                 "html",
@@ -177,7 +179,9 @@ public class WebConfigurer
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = jHipsterProperties.getCors();
-        if (config.getAllowedOrigins() != null && !config.getAllowedOrigins().isEmpty()) {
+        if (config.getAllowedOrigins()
+            != null
+            && !config.getAllowedOrigins().isEmpty()) {
             log.debug("Registering CORS filter");
             source.registerCorsConfiguration("/api/**", config);
             source.registerCorsConfiguration("/management/**", config);

@@ -82,7 +82,9 @@ public class LoggingConfiguration {
         log.info("Initializing Console logging");
 
         // More documentation is available at: https://github.com/logstash/logstash-logback-encoder
-        ConsoleAppender<ILoggingEvent> consoleAppender = new ConsoleAppender<>();
+        ConsoleAppender<
+            ILoggingEvent
+        > consoleAppender = new ConsoleAppender<>();
         consoleAppender.setContext(context);
         consoleAppender.setEncoder(compositeJsonEncoder(context));
         consoleAppender.setName(CONSOLE_APPENDER_NAME);

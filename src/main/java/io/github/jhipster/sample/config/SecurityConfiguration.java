@@ -98,7 +98,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .hasAuthority(AuthoritiesConstants.ADMIN)
             .and()
             .apply(securityConfigurerAdapter());
-        // @formatter:on
+    // @formatter:on
     }
 
     private JWTConfigurer securityConfigurerAdapter() {

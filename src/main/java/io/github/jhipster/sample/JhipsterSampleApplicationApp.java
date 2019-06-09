@@ -18,7 +18,9 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @SpringBootApplication
-@EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
+@EnableConfigurationProperties(
+    { LiquibaseProperties.class, ApplicationProperties.class }
+)
 public class JhipsterSampleApplicationApp implements InitializingBean {
     private static final Logger log = LoggerFactory.getLogger(
         JhipsterSampleApplicationApp.class

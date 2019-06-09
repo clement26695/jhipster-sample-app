@@ -135,9 +135,9 @@ public final class TestUtil {
     }
 
     /**
-     * Create a {@link FormattingConversionService} which use ISO date format, instead of the localized one.
-     * @return the {@link FormattingConversionService}.
-     */
+    * Create a {@link FormattingConversionService} which use ISO date format, instead of the localized one.
+    * @return the {@link FormattingConversionService}.
+    */
     public static FormattingConversionService createFormattingConversionService() {
         DefaultFormattingConversionService dfcs = new DefaultFormattingConversionService();
         DateTimeFormatterRegistrar registrar = new DateTimeFormatterRegistrar();
@@ -162,5 +162,6 @@ public final class TestUtil {
         return allQuery.getResultList();
     }
 
-    private TestUtil() {}
+    private TestUtil() {
+    }
 }
