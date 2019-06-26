@@ -1,11 +1,10 @@
 package io.github.jhipster.sample.domain;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -13,13 +12,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * A Operation.
- */
+* A Operation.
+*/
 @Entity
 @Table(name = "operation")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Operation implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -43,9 +41,17 @@ public class Operation implements Serializable {
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "operation_label",
-               joinColumns = @JoinColumn(name = "operation_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "label_id", referencedColumnName = "id"))
+    @JoinTable(
+        name = "operation_label",
+        joinColumns = @JoinColumn(
+            name = "operation_id",
+            referencedColumnName = "id"
+        ),
+        inverseJoinColumns = @JoinColumn(
+            name = "label_id",
+            referencedColumnName = "id"
+        )
+    )
     private Set<Label> labels = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -96,8 +102,8 @@ public class Operation implements Serializable {
     public void setLabels(Set<Label> labels) {
         this.labels = labels;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -117,10 +123,16 @@ public class Operation implements Serializable {
     @Override
     public String toString() {
         return "Operation{" +
-            "id=" + getId() +
-            ", date='" + getDate() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", amount=" + getAmount() +
+            "id=" +
+            getId() +
+            ", date='" +
+            getDate() +
+            "'" +
+            ", description='" +
+            getDescription() +
+            "'" +
+            ", amount=" +
+            getAmount() +
             "}";
     }
 }

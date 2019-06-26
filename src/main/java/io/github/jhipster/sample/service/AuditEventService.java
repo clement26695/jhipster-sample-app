@@ -7,27 +7,25 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.Instant;
 import java.util.Optional;
 
 /**
- * Service for managing audit events.
- * <p>
- * This is the default implementation to support SpringBoot Actuator {@code AuditEventRepository}.
- */
+* Service for managing audit events.
+* <p>
+* This is the default implementation to support SpringBoot Actuator {@code AuditEventRepository}.
+*/
 @Service
 @Transactional
 public class AuditEventService {
-
     private final PersistenceAuditEventRepository persistenceAuditEventRepository;
 
     private final AuditEventConverter auditEventConverter;
 
     public AuditEventService(
         PersistenceAuditEventRepository persistenceAuditEventRepository,
-        AuditEventConverter auditEventConverter) {
-
+        AuditEventConverter auditEventConverter
+    ) {
         this.persistenceAuditEventRepository = persistenceAuditEventRepository;
         this.auditEventConverter = auditEventConverter;
     }
@@ -37,8 +35,16 @@ public class AuditEventService {
             .map(auditEventConverter::convertToAuditEvent);
     }
 
-    public Page<AuditEvent> findByDates(Instant fromDate, Instant toDate, Pageable pageable) {
-        return persistenceAuditEventRepository.findAllByAuditEventDateBetween(fromDate, toDate, pageable)
+    public Page<AuditEvent> findByDates(
+        Instant fromDate,
+        Instant toDate,
+        Pageable pageable
+    ) {
+        return persistenceAuditEventRepository.findAllByAuditEventDateBetween(
+            fromDate,
+            toDate,
+            pageable
+        )
             .map(auditEventConverter::convertToAuditEvent);
     }
 
