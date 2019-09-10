@@ -13,14 +13,12 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.servlet.http.HttpSession;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static io.github.jhipster.sample.repository.CustomAuditEventRepository.EVENT_DATA_COLUMN_MAX_LENGTH;
 
@@ -30,7 +28,6 @@ import static io.github.jhipster.sample.repository.CustomAuditEventRepository.EV
 @SpringBootTest(classes = JhipsterSampleApplicationApp.class)
 @Transactional
 public class CustomAuditEventRepositoryIT {
-
     @Autowired
     private PersistenceAuditEventRepository persistenceAuditEventRepository;
 
@@ -47,7 +44,8 @@ public class CustomAuditEventRepositoryIT {
 
     @BeforeEach
     public void setup() {
-        customAuditEventRepository = new CustomAuditEventRepository(persistenceAuditEventRepository, auditEventConverter);
+        customAuditEventRepository =
+            new CustomAuditEventRepository(persistenceAuditEventRepository, auditEventConverter);
         persistenceAuditEventRepository.deleteAll();
         Instant oneHourAgo = Instant.now().minusSeconds(3600);
 
@@ -159,5 +157,4 @@ public class CustomAuditEventRepositoryIT {
         List<PersistentAuditEvent> persistentAuditEvents = persistenceAuditEventRepository.findAll();
         assertThat(persistentAuditEvents).hasSize(0);
     }
-
 }
