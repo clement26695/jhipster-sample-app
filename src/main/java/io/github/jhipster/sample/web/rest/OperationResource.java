@@ -3,7 +3,6 @@ package io.github.jhipster.sample.web.rest;
 import io.github.jhipster.sample.domain.Operation;
 import io.github.jhipster.sample.repository.OperationRepository;
 import io.github.jhipster.sample.web.rest.errors.BadRequestAlertException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -17,11 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +28,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class OperationResource {
-
     private final Logger log = LoggerFactory.getLogger(OperationResource.class);
 
     private static final String ENTITY_NAME = "operation";
@@ -53,14 +49,29 @@ public class OperationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/operations")
-    public ResponseEntity<Operation> createOperation(@Valid @RequestBody Operation operation) throws URISyntaxException {
+    public ResponseEntity<Operation> createOperation(
+        @Valid @RequestBody Operation operation
+    )
+        throws URISyntaxException {
         log.debug("REST request to save Operation : {}", operation);
         if (operation.getId() != null) {
-            throw new BadRequestAlertException("A new operation cannot already have an ID", ENTITY_NAME, "idexists");
+            throw new BadRequestAlertException(
+                "A new operation cannot already have an ID",
+                ENTITY_NAME,
+                "idexists"
+            );
         }
         Operation result = operationRepository.save(operation);
-        return ResponseEntity.created(new URI("/api/operations/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+        return ResponseEntity
+            .created(new URI("/api/operations/" + result.getId()))
+            .headers(
+                HeaderUtil.createEntityCreationAlert(
+                    applicationName,
+                    true,
+                    ENTITY_NAME,
+                    result.getId().toString()
+                )
+            )
             .body(result);
     }
 
@@ -74,14 +85,29 @@ public class OperationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/operations")
-    public ResponseEntity<Operation> updateOperation(@Valid @RequestBody Operation operation) throws URISyntaxException {
+    public ResponseEntity<Operation> updateOperation(
+        @Valid @RequestBody Operation operation
+    )
+        throws URISyntaxException {
         log.debug("REST request to update Operation : {}", operation);
         if (operation.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            throw new BadRequestAlertException(
+                "Invalid id",
+                ENTITY_NAME,
+                "idnull"
+            );
         }
         Operation result = operationRepository.save(operation);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, operation.getId().toString()))
+        return ResponseEntity
+            .ok()
+            .headers(
+                HeaderUtil.createEntityUpdateAlert(
+                    applicationName,
+                    true,
+                    ENTITY_NAME,
+                    operation.getId().toString()
+                )
+            )
             .body(result);
     }
 
@@ -94,7 +120,13 @@ public class OperationResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of operations in body.
      */
     @GetMapping("/operations")
-    public ResponseEntity<List<Operation>> getAllOperations(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+    public ResponseEntity<List<Operation>> getAllOperations(
+        Pageable pageable,
+        @RequestParam(
+            required = false,
+            defaultValue = "false"
+        ) boolean eagerload
+    ) {
         log.debug("REST request to get a page of Operations");
         Page<Operation> page;
         if (eagerload) {
@@ -102,7 +134,10 @@ public class OperationResource {
         } else {
             page = operationRepository.findAll(pageable);
         }
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
+            ServletUriComponentsBuilder.fromCurrentRequest(),
+            page
+        );
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -115,7 +150,9 @@ public class OperationResource {
     @GetMapping("/operations/{id}")
     public ResponseEntity<Operation> getOperation(@PathVariable Long id) {
         log.debug("REST request to get Operation : {}", id);
-        Optional<Operation> operation = operationRepository.findOneWithEagerRelationships(id);
+        Optional<Operation> operation = operationRepository.findOneWithEagerRelationships(
+            id
+        );
         return ResponseUtil.wrapOrNotFound(operation);
     }
 
@@ -129,6 +166,16 @@ public class OperationResource {
     public ResponseEntity<Void> deleteOperation(@PathVariable Long id) {
         log.debug("REST request to delete Operation : {}", id);
         operationRepository.deleteById(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(
+                HeaderUtil.createEntityDeletionAlert(
+                    applicationName,
+                    true,
+                    ENTITY_NAME,
+                    id.toString()
+                )
+            )
+            .build();
     }
 }
