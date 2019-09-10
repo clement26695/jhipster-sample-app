@@ -6,7 +6,6 @@ import io.github.jhipster.sample.domain.User;
 import io.github.jhipster.sample.repository.UserRepository;
 import io.github.jhipster.sample.service.dto.UserDTO;
 import io.github.jhipster.sample.service.util.RandomUtil;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,13 +17,11 @@ import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -34,7 +31,6 @@ import static org.mockito.Mockito.when;
 @SpringBootTest(classes = JhipsterSampleApplicationApp.class)
 @Transactional
 public class UserServiceIT {
-
     private static final String DEFAULT_LOGIN = "johndoe";
 
     private static final String DEFAULT_EMAIL = "johndoe@localhost";
@@ -73,7 +69,8 @@ public class UserServiceIT {
         user.setImageUrl(DEFAULT_IMAGEURL);
         user.setLangKey(DEFAULT_LANGKEY);
 
-        when(dateTimeProvider.getNow()).thenReturn(Optional.of(LocalDateTime.now()));
+        when(dateTimeProvider.getNow())
+            .thenReturn(Optional.of(LocalDateTime.now()));
         auditingHandler.setDateTimeProvider(dateTimeProvider);
     }
 
@@ -81,12 +78,15 @@ public class UserServiceIT {
     @Transactional
     public void assertThatUserMustExistToResetPassword() {
         userRepository.saveAndFlush(user);
-        Optional<User> maybeUser = userService.requestPasswordReset("invalid.login@localhost");
+        Optional<User> maybeUser = userService.requestPasswordReset(
+            "invalid.login@localhost"
+        );
         assertThat(maybeUser).isNotPresent();
 
         maybeUser = userService.requestPasswordReset(user.getEmail());
         assertThat(maybeUser).isPresent();
-        assertThat(maybeUser.orElse(null).getEmail()).isEqualTo(user.getEmail());
+        assertThat(maybeUser.orElse(null).getEmail())
+            .isEqualTo(user.getEmail());
         assertThat(maybeUser.orElse(null).getResetDate()).isNotNull();
         assertThat(maybeUser.orElse(null).getResetKey()).isNotNull();
     }
@@ -97,7 +97,9 @@ public class UserServiceIT {
         user.setActivated(false);
         userRepository.saveAndFlush(user);
 
-        Optional<User> maybeUser = userService.requestPasswordReset(user.getLogin());
+        Optional<User> maybeUser = userService.requestPasswordReset(
+            user.getLogin()
+        );
         assertThat(maybeUser).isNotPresent();
         userRepository.delete(user);
     }
@@ -112,7 +114,10 @@ public class UserServiceIT {
         user.setResetKey(resetKey);
         userRepository.saveAndFlush(user);
 
-        Optional<User> maybeUser = userService.completePasswordReset("johndoe2", user.getResetKey());
+        Optional<User> maybeUser = userService.completePasswordReset(
+            "johndoe2",
+            user.getResetKey()
+        );
         assertThat(maybeUser).isNotPresent();
         userRepository.delete(user);
     }
@@ -126,7 +131,10 @@ public class UserServiceIT {
         user.setResetKey("1234");
         userRepository.saveAndFlush(user);
 
-        Optional<User> maybeUser = userService.completePasswordReset("johndoe2", user.getResetKey());
+        Optional<User> maybeUser = userService.completePasswordReset(
+            "johndoe2",
+            user.getResetKey()
+        );
         assertThat(maybeUser).isNotPresent();
         userRepository.delete(user);
     }
@@ -142,11 +150,15 @@ public class UserServiceIT {
         user.setResetKey(resetKey);
         userRepository.saveAndFlush(user);
 
-        Optional<User> maybeUser = userService.completePasswordReset("johndoe2", user.getResetKey());
+        Optional<User> maybeUser = userService.completePasswordReset(
+            "johndoe2",
+            user.getResetKey()
+        );
         assertThat(maybeUser).isPresent();
         assertThat(maybeUser.orElse(null).getResetDate()).isNull();
         assertThat(maybeUser.orElse(null).getResetKey()).isNull();
-        assertThat(maybeUser.orElse(null).getPassword()).isNotEqualTo(oldPassword);
+        assertThat(maybeUser.orElse(null).getPassword())
+            .isNotEqualTo(oldPassword);
 
         userRepository.delete(user);
     }
@@ -155,16 +167,22 @@ public class UserServiceIT {
     @Transactional
     public void assertThatNotActivatedUsersWithNotNullActivationKeyCreatedBefore3DaysAreDeleted() {
         Instant now = Instant.now();
-        when(dateTimeProvider.getNow()).thenReturn(Optional.of(now.minus(4, ChronoUnit.DAYS)));
+        when(dateTimeProvider.getNow())
+            .thenReturn(Optional.of(now.minus(4, ChronoUnit.DAYS)));
         user.setActivated(false);
         user.setActivationKey(RandomStringUtils.random(20));
         User dbUser = userRepository.saveAndFlush(user);
         dbUser.setCreatedDate(now.minus(4, ChronoUnit.DAYS));
         userRepository.saveAndFlush(user);
-        List<User> users = userRepository.findAllByActivatedIsFalseAndActivationKeyIsNotNullAndCreatedDateBefore(now.minus(3, ChronoUnit.DAYS));
+        List<User> users = userRepository.findAllByActivatedIsFalseAndActivationKeyIsNotNullAndCreatedDateBefore(
+            now.minus(3, ChronoUnit.DAYS)
+        );
         assertThat(users).isNotEmpty();
         userService.removeNotActivatedUsers();
-        users = userRepository.findAllByActivatedIsFalseAndActivationKeyIsNotNullAndCreatedDateBefore(now.minus(3, ChronoUnit.DAYS));
+        users =
+            userRepository.findAllByActivatedIsFalseAndActivationKeyIsNotNullAndCreatedDateBefore(
+                now.minus(3, ChronoUnit.DAYS)
+            );
         assertThat(users).isEmpty();
     }
 
@@ -172,12 +190,15 @@ public class UserServiceIT {
     @Transactional
     public void assertThatNotActivatedUsersWithNullActivationKeyCreatedBefore3DaysAreNotDeleted() {
         Instant now = Instant.now();
-        when(dateTimeProvider.getNow()).thenReturn(Optional.of(now.minus(4, ChronoUnit.DAYS)));
+        when(dateTimeProvider.getNow())
+            .thenReturn(Optional.of(now.minus(4, ChronoUnit.DAYS)));
         user.setActivated(false);
         User dbUser = userRepository.saveAndFlush(user);
         dbUser.setCreatedDate(now.minus(4, ChronoUnit.DAYS));
         userRepository.saveAndFlush(user);
-        List<User> users = userRepository.findAllByActivatedIsFalseAndActivationKeyIsNotNullAndCreatedDateBefore(now.minus(3, ChronoUnit.DAYS));
+        List<User> users = userRepository.findAllByActivatedIsFalseAndActivationKeyIsNotNullAndCreatedDateBefore(
+            now.minus(3, ChronoUnit.DAYS)
+        );
         assertThat(users).isEmpty();
         userService.removeNotActivatedUsers();
         Optional<User> maybeDbUser = userRepository.findById(dbUser.getId());
@@ -188,14 +209,25 @@ public class UserServiceIT {
     @Transactional
     public void assertThatAnonymousUserIsNotGet() {
         user.setLogin(Constants.ANONYMOUS_USER);
-        if (!userRepository.findOneByLogin(Constants.ANONYMOUS_USER).isPresent()) {
+        if (
+            !userRepository.findOneByLogin(Constants.ANONYMOUS_USER).isPresent()
+        ) {
             userRepository.saveAndFlush(user);
         }
-        final PageRequest pageable = PageRequest.of(0, (int) userRepository.count());
-        final Page<UserDTO> allManagedUsers = userService.getAllManagedUsers(pageable);
-        assertThat(allManagedUsers.getContent().stream()
-            .noneMatch(user -> Constants.ANONYMOUS_USER.equals(user.getLogin())))
+        final
+        PageRequest pageable = PageRequest.of(0, (int) userRepository.count());
+        final
+        Page<UserDTO> allManagedUsers = userService.getAllManagedUsers(
+            pageable
+        );
+        assertThat(
+                allManagedUsers
+                    .getContent()
+                    .stream()
+                    .noneMatch(
+                        user -> Constants.ANONYMOUS_USER.equals(user.getLogin())
+                    )
+            )
             .isTrue();
     }
-
 }

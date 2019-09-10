@@ -4,7 +4,6 @@ import io.github.jhipster.sample.JhipsterSampleApplicationApp;
 import io.github.jhipster.sample.domain.Operation;
 import io.github.jhipster.sample.repository.OperationRepository;
 import io.github.jhipster.sample.web.rest.errors.ExceptionTranslator;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -20,14 +19,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
-
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-
 import static io.github.jhipster.sample.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -40,9 +37,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest(classes = JhipsterSampleApplicationApp.class)
 public class OperationResourceIT {
-
     private static final Instant DEFAULT_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final Instant UPDATED_DATE = Instant
+        .now()
+        .truncatedTo(ChronoUnit.MILLIS);
     private static final Instant SMALLER_DATE = Instant.ofEpochMilli(-1L);
 
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
@@ -80,13 +78,19 @@ public class OperationResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final OperationResource operationResource = new OperationResource(operationRepository);
-        this.restOperationMockMvc = MockMvcBuilders.standaloneSetup(operationResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
+        final
+        OperationResource operationResource = new OperationResource(
+            operationRepository
+        );
+        this.restOperationMockMvc =
+            MockMvcBuilders
+                .standaloneSetup(operationResource)
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setConversionService(createFormattingConversionService())
+                .setMessageConverters(jacksonMessageConverter)
+                .setValidator(validator)
+                .build();
     }
 
     /**
@@ -102,6 +106,7 @@ public class OperationResourceIT {
         operation.setAmount(DEFAULT_AMOUNT);
         return operation;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -127,17 +132,19 @@ public class OperationResourceIT {
         int databaseSizeBeforeCreate = operationRepository.findAll().size();
 
         // Create the Operation
-        restOperationMockMvc.perform(post("/api/operations")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(operation)))
-            .andExpect(status().isCreated());
+            restOperationMockMvc.perform(
+                post("/api/operations")
+                    .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                    .content(TestUtil.convertObjectToJsonBytes(operation))
+            ).andExpect(status().isCreated());
 
         // Validate the Operation in the database
         List<Operation> operationList = operationRepository.findAll();
         assertThat(operationList).hasSize(databaseSizeBeforeCreate + 1);
         Operation testOperation = operationList.get(operationList.size() - 1);
         assertThat(testOperation.getDate()).isEqualTo(DEFAULT_DATE);
-        assertThat(testOperation.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testOperation.getDescription())
+            .isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testOperation.getAmount()).isEqualTo(DEFAULT_AMOUNT);
     }
 
@@ -150,9 +157,12 @@ public class OperationResourceIT {
         operation.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restOperationMockMvc.perform(post("/api/operations")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(operation)))
+            restOperationMockMvc
+            .perform(
+                post("/api/operations")
+                    .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                    .content(TestUtil.convertObjectToJsonBytes(operation))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the Operation in the database
@@ -160,20 +170,20 @@ public class OperationResourceIT {
         assertThat(operationList).hasSize(databaseSizeBeforeCreate);
     }
 
-
     @Test
     @Transactional
     public void checkDateIsRequired() throws Exception {
         int databaseSizeBeforeTest = operationRepository.findAll().size();
+
         // set the field null
         operation.setDate(null);
 
         // Create the Operation, which fails.
-
-        restOperationMockMvc.perform(post("/api/operations")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(operation)))
-            .andExpect(status().isBadRequest());
+            restOperationMockMvc.perform(
+                post("/api/operations")
+                    .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                    .content(TestUtil.convertObjectToJsonBytes(operation))
+            ).andExpect(status().isBadRequest());
 
         List<Operation> operationList = operationRepository.findAll();
         assertThat(operationList).hasSize(databaseSizeBeforeTest);
@@ -183,15 +193,16 @@ public class OperationResourceIT {
     @Transactional
     public void checkAmountIsRequired() throws Exception {
         int databaseSizeBeforeTest = operationRepository.findAll().size();
+
         // set the field null
         operation.setAmount(null);
 
         // Create the Operation, which fails.
-
-        restOperationMockMvc.perform(post("/api/operations")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(operation)))
-            .andExpect(status().isBadRequest());
+            restOperationMockMvc.perform(
+                post("/api/operations")
+                    .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                    .content(TestUtil.convertObjectToJsonBytes(operation))
+            ).andExpect(status().isBadRequest());
 
         List<Operation> operationList = operationRepository.findAll();
         assertThat(operationList).hasSize(databaseSizeBeforeTest);
@@ -204,46 +215,58 @@ public class OperationResourceIT {
         operationRepository.saveAndFlush(operation);
 
         // Get all the operationList
-        restOperationMockMvc.perform(get("/api/operations?sort=id,desc"))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(operation.getId().intValue())))
-            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.intValue())));
+            restOperationMockMvc.perform(
+                get("/api/operations?sort=id,desc")
+            ).andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)).andExpect(jsonPath("$.[*].id").value(hasItem(operation.getId().intValue()))).andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString()))).andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString()))).andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.intValue())));
     }
-    
-    @SuppressWarnings({"unchecked"})
-    public void getAllOperationsWithEagerRelationshipsIsEnabled() throws Exception {
-        OperationResource operationResource = new OperationResource(operationRepositoryMock);
-        when(operationRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
-        MockMvc restOperationMockMvc = MockMvcBuilders.standaloneSetup(operationResource)
+    @SuppressWarnings({ "unchecked" })
+    public void getAllOperationsWithEagerRelationshipsIsEnabled()
+        throws Exception {
+        OperationResource operationResource = new OperationResource(
+            operationRepositoryMock
+        );
+        when(operationRepositoryMock.findAllWithEagerRelationships(any()))
+            .thenReturn(new PageImpl(new ArrayList<>()));
+
+        MockMvc restOperationMockMvc = MockMvcBuilders
+            .standaloneSetup(operationResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
             .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
+            .setMessageConverters(jacksonMessageConverter)
+            .build();
 
-        restOperationMockMvc.perform(get("/api/operations?eagerload=true"))
-        .andExpect(status().isOk());
+        restOperationMockMvc
+            .perform(get("/api/operations?eagerload=true"))
+            .andExpect(status().isOk());
 
-        verify(operationRepositoryMock, times(1)).findAllWithEagerRelationships(any());
+        verify(operationRepositoryMock, times(1))
+            .findAllWithEagerRelationships(any());
     }
 
-    @SuppressWarnings({"unchecked"})
-    public void getAllOperationsWithEagerRelationshipsIsNotEnabled() throws Exception {
-        OperationResource operationResource = new OperationResource(operationRepositoryMock);
-            when(operationRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
-            MockMvc restOperationMockMvc = MockMvcBuilders.standaloneSetup(operationResource)
+    @SuppressWarnings({ "unchecked" })
+    public void getAllOperationsWithEagerRelationshipsIsNotEnabled()
+        throws Exception {
+        OperationResource operationResource = new OperationResource(
+            operationRepositoryMock
+        );
+        when(operationRepositoryMock.findAllWithEagerRelationships(any()))
+            .thenReturn(new PageImpl(new ArrayList<>()));
+        MockMvc restOperationMockMvc = MockMvcBuilders
+            .standaloneSetup(operationResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
             .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
+            .setMessageConverters(jacksonMessageConverter)
+            .build();
 
-        restOperationMockMvc.perform(get("/api/operations?eagerload=true"))
-        .andExpect(status().isOk());
+        restOperationMockMvc
+            .perform(get("/api/operations?eagerload=true"))
+            .andExpect(status().isOk());
 
-            verify(operationRepositoryMock, times(1)).findAllWithEagerRelationships(any());
+        verify(operationRepositoryMock, times(1))
+            .findAllWithEagerRelationships(any());
     }
 
     @Test
@@ -253,21 +276,18 @@ public class OperationResourceIT {
         operationRepository.saveAndFlush(operation);
 
         // Get the operation
-        restOperationMockMvc.perform(get("/api/operations/{id}", operation.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(operation.getId().intValue()))
-            .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
-            .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT.intValue()));
+            restOperationMockMvc.perform(
+                get("/api/operations/{id}", operation.getId())
+            ).andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)).andExpect(jsonPath("$.id").value(operation.getId().intValue())).andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString())).andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString())).andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT.intValue()));
     }
 
     @Test
     @Transactional
     public void getNonExistingOperation() throws Exception {
         // Get the operation
-        restOperationMockMvc.perform(get("/api/operations/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+            restOperationMockMvc.perform(
+                get("/api/operations/{id}", Long.MAX_VALUE)
+            ).andExpect(status().isNotFound());
     }
 
     @Test
@@ -279,16 +299,24 @@ public class OperationResourceIT {
         int databaseSizeBeforeUpdate = operationRepository.findAll().size();
 
         // Update the operation
-        Operation updatedOperation = operationRepository.findById(operation.getId()).get();
+        Operation updatedOperation = operationRepository
+            .findById(operation.getId())
+            .get();
+
         // Disconnect from session so that the updates on updatedOperation are not directly saved in db
         em.detach(updatedOperation);
         updatedOperation.setDate(UPDATED_DATE);
         updatedOperation.setDescription(UPDATED_DESCRIPTION);
         updatedOperation.setAmount(UPDATED_AMOUNT);
 
-        restOperationMockMvc.perform(put("/api/operations")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedOperation)))
+        restOperationMockMvc
+            .perform(
+                put("/api/operations")
+                    .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                    .content(
+                        TestUtil.convertObjectToJsonBytes(updatedOperation)
+                    )
+            )
             .andExpect(status().isOk());
 
         // Validate the Operation in the database
@@ -296,7 +324,8 @@ public class OperationResourceIT {
         assertThat(operationList).hasSize(databaseSizeBeforeUpdate);
         Operation testOperation = operationList.get(operationList.size() - 1);
         assertThat(testOperation.getDate()).isEqualTo(UPDATED_DATE);
-        assertThat(testOperation.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testOperation.getDescription())
+            .isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testOperation.getAmount()).isEqualTo(UPDATED_AMOUNT);
     }
 
@@ -306,12 +335,12 @@ public class OperationResourceIT {
         int databaseSizeBeforeUpdate = operationRepository.findAll().size();
 
         // Create the Operation
-
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restOperationMockMvc.perform(put("/api/operations")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(operation)))
-            .andExpect(status().isBadRequest());
+            // If the entity doesn't have an ID, it will throw BadRequestAlertException
+            restOperationMockMvc.perform(
+                put("/api/operations")
+                    .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                    .content(TestUtil.convertObjectToJsonBytes(operation))
+            ).andExpect(status().isBadRequest());
 
         // Validate the Operation in the database
         List<Operation> operationList = operationRepository.findAll();
@@ -327,9 +356,10 @@ public class OperationResourceIT {
         int databaseSizeBeforeDelete = operationRepository.findAll().size();
 
         // Delete the operation
-        restOperationMockMvc.perform(delete("/api/operations/{id}", operation.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(status().isNoContent());
+            restOperationMockMvc.perform(
+                delete("/api/operations/{id}", operation.getId())
+                    .accept(TestUtil.APPLICATION_JSON_UTF8)
+            ).andExpect(status().isNoContent());
 
         // Validate the database contains one less item
         List<Operation> operationList = operationRepository.findAll();

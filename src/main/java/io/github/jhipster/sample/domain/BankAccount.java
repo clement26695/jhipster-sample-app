@@ -1,11 +1,10 @@
 package io.github.jhipster.sample.domain;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -18,7 +17,6 @@ import java.util.Set;
 @Table(name = "bank_account")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class BankAccount implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -81,8 +79,8 @@ public class BankAccount implements Serializable {
     public void setOperations(Set<Operation> operations) {
         this.operations = operations;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -101,10 +99,14 @@ public class BankAccount implements Serializable {
 
     @Override
     public String toString() {
-        return "BankAccount{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", balance=" + getBalance() +
-            "}";
+        return ("BankAccount{" +
+            "id=" +
+            getId() +
+            ", name='" +
+            getName() +
+            "'" +
+            ", balance=" +
+            getBalance() +
+            "}");
     }
 }

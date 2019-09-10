@@ -1,11 +1,10 @@
 package io.github.jhipster.sample.domain;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +16,6 @@ import java.util.Set;
 @Table(name = "label")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Label implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -58,8 +56,8 @@ public class Label implements Serializable {
     public void setOperations(Set<Operation> operations) {
         this.operations = operations;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -78,9 +76,12 @@ public class Label implements Serializable {
 
     @Override
     public String toString() {
-        return "Label{" +
-            "id=" + getId() +
-            ", label='" + getLabel() + "'" +
-            "}";
+        return ("Label{" +
+            "id=" +
+            getId() +
+            ", label='" +
+            getLabel() +
+            "'" +
+            "}");
     }
 }

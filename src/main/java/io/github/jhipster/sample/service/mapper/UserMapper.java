@@ -3,9 +3,7 @@ package io.github.jhipster.sample.service.mapper;
 import io.github.jhipster.sample.domain.Authority;
 import io.github.jhipster.sample.domain.User;
 import io.github.jhipster.sample.service.dto.UserDTO;
-
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -19,7 +17,8 @@ import java.util.stream.Collectors;
 public class UserMapper {
 
     public List<UserDTO> usersToUserDTOs(List<User> users) {
-        return users.stream()
+        return users
+            .stream()
             .filter(Objects::nonNull)
             .map(this::userToUserDTO)
             .collect(Collectors.toList());
@@ -30,7 +29,8 @@ public class UserMapper {
     }
 
     public List<User> userDTOsToUsers(List<UserDTO> userDTOs) {
-        return userDTOs.stream()
+        return userDTOs
+            .stream()
             .filter(Objects::nonNull)
             .map(this::userDTOToUser)
             .collect(Collectors.toList());
@@ -49,22 +49,30 @@ public class UserMapper {
             user.setImageUrl(userDTO.getImageUrl());
             user.setActivated(userDTO.isActivated());
             user.setLangKey(userDTO.getLangKey());
-            Set<Authority> authorities = this.authoritiesFromStrings(userDTO.getAuthorities());
+            Set<Authority> authorities =
+                this.authoritiesFromStrings(userDTO.getAuthorities());
             user.setAuthorities(authorities);
             return user;
         }
     }
 
-
-    private Set<Authority> authoritiesFromStrings(Set<String> authoritiesAsString) {
+    private Set<Authority> authoritiesFromStrings(
+        Set<String> authoritiesAsString
+    ) {
         Set<Authority> authorities = new HashSet<>();
 
-        if(authoritiesAsString != null){
-            authorities = authoritiesAsString.stream().map(string -> {
-                Authority auth = new Authority();
-                auth.setName(string);
-                return auth;
-            }).collect(Collectors.toSet());
+        if (authoritiesAsString != null) {
+            authorities =
+                authoritiesAsString
+                    .stream()
+                    .map(
+                        string -> {
+                            Authority auth = new Authority();
+                            auth.setName(string);
+                            return auth;
+                        }
+                    )
+                    .collect(Collectors.toSet());
         }
 
         return authorities;

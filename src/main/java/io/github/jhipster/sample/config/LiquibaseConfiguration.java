@@ -12,14 +12,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
-
 import javax.sql.DataSource;
 import java.util.concurrent.Executor;
 
 @Configuration
 public class LiquibaseConfiguration {
-
-    private final Logger log = LoggerFactory.getLogger(LiquibaseConfiguration.class);
+    private final Logger log = LoggerFactory.getLogger(
+        LiquibaseConfiguration.class
+    );
 
     private final Environment env;
 
@@ -31,9 +31,11 @@ public class LiquibaseConfiguration {
     }
 
     @Bean
-    public SpringLiquibase liquibase(@Qualifier("taskExecutor") Executor executor,
-            DataSource dataSource, LiquibaseProperties liquibaseProperties) {
-
+    public SpringLiquibase liquibase(
+        @Qualifier("taskExecutor") Executor executor,
+        DataSource dataSource,
+        LiquibaseProperties liquibaseProperties
+    ) {
         // Use liquibase.integration.spring.SpringLiquibase if you don't want Liquibase to start asynchronously
         SpringLiquibase liquibase = new AsyncSpringLiquibase(executor, env);
         liquibase.setDataSource(dataSource);
@@ -42,7 +44,11 @@ public class LiquibaseConfiguration {
         liquibase.setDefaultSchema(liquibaseProperties.getDefaultSchema());
         liquibase.setDropFirst(liquibaseProperties.isDropFirst());
         liquibase.setChangeLogParameters(liquibaseProperties.getParameters());
-        if (env.acceptsProfiles(Profiles.of(JHipsterConstants.SPRING_PROFILE_NO_LIQUIBASE))) {
+        if (
+            env.acceptsProfiles(
+                Profiles.of(JHipsterConstants.SPRING_PROFILE_NO_LIQUIBASE)
+            )
+        ) {
             liquibase.setShouldRun(false);
         } else {
             liquibase.setShouldRun(liquibaseProperties.isEnabled());
