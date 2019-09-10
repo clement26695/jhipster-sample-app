@@ -3,7 +3,6 @@ package io.github.jhipster.sample.web.rest;
 import io.github.jhipster.sample.domain.Label;
 import io.github.jhipster.sample.repository.LabelRepository;
 import io.github.jhipster.sample.web.rest.errors.BadRequestAlertException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -11,11 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +22,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class LabelResource {
-
     private final Logger log = LoggerFactory.getLogger(LabelResource.class);
 
     private static final String ENTITY_NAME = "label";
@@ -53,8 +49,11 @@ public class LabelResource {
             throw new BadRequestAlertException("A new label cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Label result = labelRepository.save(label);
-        return ResponseEntity.created(new URI("/api/labels/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+        return ResponseEntity
+            .created(new URI("/api/labels/" + result.getId()))
+            .headers(
+                HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
+            )
             .body(result);
     }
 
@@ -74,7 +73,8 @@ public class LabelResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         Label result = labelRepository.save(label);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, label.getId().toString()))
             .body(result);
     }
@@ -114,6 +114,9 @@ public class LabelResource {
     public ResponseEntity<Void> deleteLabel(@PathVariable Long id) {
         log.debug("REST request to delete Label : {}", id);
         labelRepository.deleteById(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

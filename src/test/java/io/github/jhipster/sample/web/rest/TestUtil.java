@@ -9,25 +9,21 @@ import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.http.MediaType;
-
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Utility class for testing REST controllers.
  */
 public final class TestUtil {
-
     private static final ObjectMapper mapper = createObjectMapper();
 
     /** MediaType for JSON UTF8 */
@@ -70,7 +66,6 @@ public final class TestUtil {
      * A matcher that tests that the examined string represents the same instant as the reference datetime.
      */
     public static class ZonedDateTimeMatcher extends TypeSafeDiagnosingMatcher<String> {
-
         private final ZonedDateTime date;
 
         public ZonedDateTimeMatcher(ZonedDateTime date) {
@@ -86,11 +81,12 @@ public final class TestUtil {
                 }
                 return true;
             } catch (DateTimeParseException e) {
-                mismatchDescription.appendText("was ").appendValue(item)
+                mismatchDescription
+                    .appendText("was ")
+                    .appendValue(item)
                     .appendText(", which could not be parsed as a ZonedDateTime");
                 return false;
             }
-
         }
 
         @Override
@@ -115,15 +111,18 @@ public final class TestUtil {
         assertThat(domainObject1.toString()).isNotNull();
         assertThat(domainObject1).isEqualTo(domainObject1);
         assertThat(domainObject1.hashCode()).isEqualTo(domainObject1.hashCode());
+
         // Test with an instance of another class
         Object testOtherObject = new Object();
         assertThat(domainObject1).isNotEqualTo(testOtherObject);
         assertThat(domainObject1).isNotEqualTo(null);
+
         // Test with an instance of the same class
         T domainObject2 = clazz.getConstructor().newInstance();
         assertThat(domainObject1).isNotEqualTo(domainObject2);
+
         // HashCodes are equals because the objects are not persisted yet
-        assertThat(domainObject1.hashCode()).isEqualTo(domainObject2.hashCode());
+            assertThat(domainObject1.hashCode()).isEqualTo(domainObject2.hashCode());
     }
 
     /**
@@ -131,7 +130,7 @@ public final class TestUtil {
      * @return the {@link FormattingConversionService}.
      */
     public static FormattingConversionService createFormattingConversionService() {
-        DefaultFormattingConversionService dfcs = new DefaultFormattingConversionService ();
+        DefaultFormattingConversionService dfcs = new DefaultFormattingConversionService();
         DateTimeFormatterRegistrar registrar = new DateTimeFormatterRegistrar();
         registrar.setUseIsoFormat(true);
         registrar.registerFormatters(dfcs);

@@ -3,9 +3,7 @@ package io.github.jhipster.sample.web.rest;
 import io.github.jhipster.sample.security.jwt.JWTFilter;
 import io.github.jhipster.sample.security.jwt.TokenProvider;
 import io.github.jhipster.sample.web.rest.vm.LoginVM;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +12,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 
 /**
@@ -23,7 +20,6 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api")
 public class UserJWTController {
-
     private final TokenProvider tokenProvider;
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -35,9 +31,10 @@ public class UserJWTController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginVM loginVM) {
-
-        UsernamePasswordAuthenticationToken authenticationToken =
-            new UsernamePasswordAuthenticationToken(loginVM.getUsername(), loginVM.getPassword());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+            loginVM.getUsername(),
+            loginVM.getPassword()
+        );
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -52,7 +49,6 @@ public class UserJWTController {
      * Object to return as body in JWT Authentication.
      */
     static class JWTToken {
-
         private String idToken;
 
         JWTToken(String idToken) {
